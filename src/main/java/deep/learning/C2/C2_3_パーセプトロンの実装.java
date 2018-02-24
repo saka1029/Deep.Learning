@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 
-import test.deep.learning.Util;
+import deep.learning.common.Util;
 
 public class C2_3_パーセプトロンの実装 {
 
@@ -38,7 +38,7 @@ public class C2_3_パーセプトロンの実装 {
     }
 
     public static int AND2(int x1, int x2) {
-        INDArray x = Nd4j.create(new double [] {x1, x2});
+        INDArray x = Nd4j.create(new double[] {x1, x2});
         INDArray w = Nd4j.create(new double[] {0.5, 0.5});
         double b = -0.7;
         double tmp = w.mul(x).sumNumber().doubleValue() + b;
@@ -49,7 +49,7 @@ public class C2_3_パーセプトロンの実装 {
     }
 
     public static int NAND(int x1, int x2) {
-        INDArray x = Nd4j.create(new double [] {x1, x2});
+        INDArray x = Nd4j.create(new double[] {x1, x2});
         INDArray w = Nd4j.create(new double[] {-0.5, -0.5});
         double b = 0.7;
         double tmp = w.mul(x).sumNumber().doubleValue() + b;

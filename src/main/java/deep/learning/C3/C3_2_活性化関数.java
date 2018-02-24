@@ -9,9 +9,9 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.ops.transforms.Transforms;
 
-import test.deep.learning.Util;
+import deep.learning.common.Util;
 
-public class C3__2_活性化関数 {
+public class C3_2_活性化関数 {
 
     public static double step_function(double x) {
         if (x > 0)
@@ -40,7 +40,7 @@ public class C3__2_活性化関数 {
     }
 
     public static double sigmoid(double x) {
-        return 1.0 / (1.0 + Math.exp(-x));
+        return (double)(1.0 / (1.0 + Math.exp(-x)));
     }
 
     public static INDArray sigmoid(INDArray x) {
