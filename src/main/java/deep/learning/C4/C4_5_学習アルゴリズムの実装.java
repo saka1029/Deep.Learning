@@ -80,7 +80,7 @@ public class C4_5_学習アルゴリズムの実装 {
         }
     }
 
-//    @Ignore
+    @Ignore
     @Test
     public void C4_5_3_テストデータで評価() throws Exception {
         // MNISTデータセットを読み込みます。
@@ -280,8 +280,6 @@ public class C4_5_学習アルゴリズムの実装 {
             // iteration 73 loss=71.480896 elapse=94394ms
             // train acc, test acc | 0.7953, 0.7984
             // iteration 74 loss=86.362747 elapse=95266ms
-            // train acc, test acc | 0.8056166666666666, 0.8126
-            // iteration 75 loss=75.059753 elapse=93620ms
         }
     }
 }
