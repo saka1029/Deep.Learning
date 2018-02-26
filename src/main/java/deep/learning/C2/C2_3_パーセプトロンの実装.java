@@ -42,10 +42,7 @@ public class C2_3_パーセプトロンの実装 {
         INDArray w = Nd4j.create(new double[] {0.5, 0.5});
         double b = -0.7;
         double tmp = w.mul(x).sumNumber().doubleValue() + b;
-        if (tmp <= 0)
-            return 0;
-        else
-            return 1;
+        return tmp <= 0 ? 0 : 1;
     }
 
     public static int NAND(int x1, int x2) {

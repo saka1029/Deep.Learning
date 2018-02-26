@@ -6,6 +6,7 @@ public class Constants {
 
     public static File MNIST = new File("input/mnist");
     public static File IMAGES = new File("output/images");
+    public static File WEIGHTS = new File("output/weights");
 
     public static File TrainImages = new File(MNIST, "train-images.idx3-ubyte");
     public static File TrainLabels = new File(MNIST, "train-labels.idx1-ubyte");

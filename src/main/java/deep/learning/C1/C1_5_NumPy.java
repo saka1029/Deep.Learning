@@ -58,7 +58,7 @@ public class C1_5_NumPy {
         } catch (IllegalStateException e) {
             assertEquals("Mis matched shapes", e.getMessage());
         }
-        // あるいはmmulRowVector(INDArray)を使うこともできます。
+        // あるいはmulRowVector(INDArray)を使うこともできます。
         assertEquals("[[10.00,40.00],[30.00,80.00]]", Util.string(A.mulRowVector(B)));
     }
 
@@ -81,8 +81,8 @@ public class C1_5_NumPy {
      * <a href="https://nd4j.org/ja/userguide">データ型の設定</a>には以下の記述があります。
      * <blockquote>
      * データ型の設定<br>
-     * ND4Jは現在、double精度値またはdouble精度値によるINDArrayによるバッキングを許可しています。
-     * デフォルトは単精度（double）です。ND4Jがdouble精度に配列全体に使用する順序を設定するには、
+     * ND4Jは現在、float精度値またはdouble精度値によるINDArrayによるバッキングを許可しています。
+     * デフォルトは単精度（float）です。ND4Jがdouble精度を配列全体に使用するように設定するには、
      * 以下を使用することができます。
      * 0.4-rc3.8、及びそれ以前の場合、
      * <pre><code>

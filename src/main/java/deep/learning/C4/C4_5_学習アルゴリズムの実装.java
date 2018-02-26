@@ -80,7 +80,7 @@ public class C4_5_学習アルゴリズムの実装 {
         }
     }
 
-    @Ignore
+//    @Ignore
     @Test
     public void C4_5_3_テストデータで評価() throws Exception {
         // MNISTデータセットを読み込みます。
