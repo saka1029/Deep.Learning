@@ -119,37 +119,16 @@ public class C4_5_学習アルゴリズムの実装 {
             double loss = network.loss(x_batch, t_batch);
             train_loss_list.add(loss);
             // 1エポックごとに認識制度を計算
-//            if (i % iter_per_epoch == 0) {
+            if (i % iter_per_epoch == 0) {
                 double train_acc = network.accuracy(x_train, t_train);
                 double test_acc = network.accuracy(x_test, t_test);
                 train_acc_list.add(train_acc);
                 test_acc_list.add(test_acc);
                 System.out.printf("train acc, test acc | %s, %s%n",
                     train_acc, test_acc);
-//            }
+            }
             System.out.printf("iteration %d loss=%f elapse=%dms%n",
                 i, loss, System.currentTimeMillis() - start);
-            // 実行例
-            // train acc, test acc | 0.13663333333333333, 0.1377
-            // iteration 0 loss=227.292389 elapse=130824ms
-            // train acc, test acc | 0.0993, 0.1032
-            // iteration 1 loss=224.047760 elapse=119176ms
-            // train acc, test acc | 0.09915, 0.1009
-            // iteration 2 loss=230.238113 elapse=106287ms
-            // train acc, test acc | 0.11236666666666667, 0.1135
-            // iteration 3 loss=221.465485 elapse=103833ms
-            // train acc, test acc | 0.09736666666666667, 0.0982
-            // iteration 4 loss=228.571060 elapse=100573ms
-            // train acc, test acc | 0.09736666666666667, 0.0982
-            // iteration 5 loss=224.213898 elapse=103367ms
-            // train acc, test acc | 0.09871666666666666, 0.098
-            // iteration 6 loss=224.962784 elapse=103401ms
-            // train acc, test acc | 0.09915, 0.1009
-            // iteration 7 loss=226.428650 elapse=102678ms
-            // train acc, test acc | 0.11236666666666667, 0.1135
-            // iteration 8 loss=221.897980 elapse=105195ms
-            // train acc, test acc | 0.10516666666666667, 0.1039
-            // iteration 9 loss=223.947723 elapse=105490ms
         }
     }
 }
