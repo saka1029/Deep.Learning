@@ -11,7 +11,7 @@ public class C4_3_数値微分 {
 
     public static double numerical_diff_bad(DoubleUnaryOperator f, double x) {
         double h = 10e-50;
-        return (f.applyAsDouble(x + (double)h) - f.applyAsDouble(x)) / (double)h;
+        return (f.applyAsDouble(x + h) - f.applyAsDouble(x)) / h;
     }
 
     @Test

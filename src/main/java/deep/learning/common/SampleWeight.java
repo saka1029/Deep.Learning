@@ -78,7 +78,7 @@ public class SampleWeight {
                     value = Nd4j.create(rows);
                     weights.put(header[0], value);
                     for (int r = 0; r < rows; ++r)
-                        value.putScalar(r, Float.parseFloat(reader.readLine()));
+                        value.putScalar(r, Double.parseDouble(reader.readLine()));
                 } else if (header.length == 3) {
                     int rows = Integer.parseInt(header[1]);
                     int cols = Integer.parseInt(header[2]);
@@ -86,7 +86,7 @@ public class SampleWeight {
                     weights.put(header[0], value);
                     for (int r = 0; r < rows; ++r)
                         for (int c = 0; c < cols; ++c)
-                            value.putScalar(r, c, Float.parseFloat(reader.readLine()));
+                            value.putScalar(r, c, Double.parseDouble(reader.readLine()));
                 } else
                     throw new IOException("Invalid format: " + line);
             }

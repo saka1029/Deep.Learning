@@ -20,7 +20,7 @@ import deep.learning.common.TwoLayerParams;
 public class C4_5_学習アルゴリズムの実装 {
 
     @Test
-//    @Ignore // ７分くらいかかります。
+    @Ignore // 5～10分くらいかかります。
     public void C4_5_1_２層ニューラルネットワークのクラス() throws Exception {
         // deep.learning.common.TwoLayerNet.java参照
         TwoLayerNet net = new TwoLayerNet(784, 100, 10);
@@ -32,7 +32,7 @@ public class C4_5_学習アルゴリズムの実装 {
             INDArray x = r.nextGaussian(new int[] {100, 784});
             INDArray t = r.nextGaussian(new int[] {100, 10});
             INDArray y = net.predict(x);
-            assertArrayEquals(new int[] {1, 10}, y.shape());
+            assertArrayEquals(new int[] {100, 10}, y.shape());
             TwoLayerParams grads = net.numerical_gradient(x, t);
             assertArrayEquals(new int[] {784, 100}, grads.W1.shape());
             assertArrayEquals(new int[] {1, 100}, grads.b1.shape());
@@ -80,7 +80,7 @@ public class C4_5_学習アルゴリズムの実装 {
         }
     }
 
-//    @Ignore
+    @Ignore
     @Test
     public void C4_5_3_テストデータで評価() throws Exception {
         // MNISTデータセットを読み込みます。

@@ -27,10 +27,8 @@ public class C3_6_手書き数字認識 {
         MNISTImages test = new MNISTImages(Constants.TestImages, Constants.TestLabels);
         assertEquals(60000, train.size);
         assertEquals(784, train.imageSize);
-        assertEquals(60000, train.size);
         assertEquals(10000, test.size);
         assertEquals(784, test.imageSize);
-        assertEquals(10000, test.size);
 
         // 訓練データの先頭の100イメージをPNGとして出力します。
         if (!Constants.TrainImagesOutput.exists())

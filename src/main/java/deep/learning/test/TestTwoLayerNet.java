@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.DataSet;
@@ -47,6 +48,7 @@ public class TestTwoLayerNet {
      * 学習が終了した時点でウェイトをファイルに出力します。
      */
     @Test
+    @Ignore
     public void testLearn() throws Exception {
         double accuracy_goal = 0.9;
         // ウェイトの出力ディレクトリを確保します。
