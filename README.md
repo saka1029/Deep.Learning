@@ -2,7 +2,7 @@
 
 [「ゼロから作るDeep Learning ――Pythonで学ぶディープラーニングの理論と実装」](https://www.oreilly.co.jp/books/9784873117584/)
 (オライリー・ジャパン 斎藤 康毅　著)はDeep Learningを初歩から解説した本です。プログラミング言語としてPythonを使用していますが、
-本投稿は（およびこれに続く一連の投稿では）これをJavaで実装します。ただし
+本プロジェクトはこれをJavaで実装します。ただし
 [ゼロから作るDeep Learning](https://www.oreilly.co.jp/books/9784873117584/)
 を置き換えるものではなく、併読することを前提として記述しています。
 
@@ -48,7 +48,7 @@ public class C1_5_NumPy {
 }
 ```
 
-これは「第1章 Python入門」の「1.5.2 NumPy配列の生成」に登場するサンプルプログラムをJavaで記述したものです。クラス名やメソッド名に日本語を使用しているので、環境によっては動作しないかもしれません。私の環境（Windows10 + Eclipse Oxygen.2 Release 4.7.2）では問題なく動きます。
+これは「1 Python入門 1.5 NumPy 1.5.2 NumPy配列の生成」に登場するサンプルプログラムをJavaで記述したものです。クラス名やメソッド名に日本語を使用しているので、環境によっては動作しないかもしれません。私の環境（Windows10 + Eclipse Oxygen.2 Release 4.7.2）では問題なく動きます。
 Pythonのコードが記述されている節についてのみ記述しているので見出しの項番は連番になっていません。
 Javaで記述したすべてのプログラムはGitHubの
 [saka1029/Deep.Learning](https://github.com/saka1029/Deep.Learning)
