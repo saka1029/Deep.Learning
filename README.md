@@ -2,7 +2,7 @@
 
 [「ゼロから作るDeep Learning ――Pythonで学ぶディープラーニングの理論と実装」](https://www.oreilly.co.jp/books/9784873117584/)
 (オライリー・ジャパン 斎藤 康毅　著)はDeep Learningを初歩から解説した本です。プログラミング言語としてPythonを使用していますが、
-本投稿は（およびこれに続く一連の投稿では）これをJavaで実装します。ただし
+本プロジェクトはこれをJavaで実装します。ただし
 [ゼロから作るDeep Learning](https://www.oreilly.co.jp/books/9784873117584/)
 を置き換えるものではなく、併読することを前提として記述しています。
 
