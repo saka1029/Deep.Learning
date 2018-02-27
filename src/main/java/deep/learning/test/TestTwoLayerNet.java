@@ -3,7 +3,9 @@ package deep.learning.test;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +15,10 @@ import org.junit.Test;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.factory.Nd4j;
+import org.nd4j.linalg.indexing.NDArrayIndex;
 
 import deep.learning.common.Constants;
+import deep.learning.common.Functions;
 import deep.learning.common.MNISTImages;
 import deep.learning.common.TwoLayerNet;
 import deep.learning.common.TwoLayerParams;
@@ -48,7 +52,7 @@ public class TestTwoLayerNet {
      * 学習が終了した時点でウェイトをファイルに出力します。
      */
     @Test
-    @Ignore
+    @Ignore //  4～5時間かかります。
     public void testLearn() throws Exception {
         double accuracy_goal = 0.9;
         // ウェイトの出力ディレクトリを確保します。
@@ -102,5 +106,35 @@ public class TestTwoLayerNet {
             new FileOutputStream(weights))) {
             os.writeObject(network.parms);
         }
+    }
+
+    /**
+     * 90%まで訓練したウェイトデータで訓練データを認識して
+     * 認識精度が90%を超えることを確認します。
+     */
+    @Test
+    public void testPredict() throws Exception {
+        MNISTImages train = new MNISTImages(Constants.TrainImages, Constants.TrainLabels);
+        INDArray x_train = train.normalizedImages();
+        File weights = new File(Constants.WEIGHTS, "TwoLayerParms.ser");
+        TwoLayerParams parms = null;
+        try (ObjectInputStream is = new ObjectInputStream(new FileInputStream(weights))) {
+            parms = (TwoLayerParams)is.readObject();
+        }
+        TwoLayerNet network = new TwoLayerNet(parms.W1, parms.b1, parms.W2, parms.b2);
+        int batch_size = 100;
+        int size = x_train.size(0);
+        int accuracy_cnt = 0;
+        for (int i = 0; i < size; i += batch_size) {
+            // バッチサイズ分のイメージを取り出してpredict()を呼びます。
+            INDArray y = network.predict(x_train.get(NDArrayIndex.interval(i, i + batch_size)));
+            INDArray max = Functions.argmax(y);
+            for (int j = 0; j < batch_size; ++j)
+                if (max.getInt(j) == train.label(i + j))
+                    ++accuracy_cnt;
+        }
+        System.out.printf("accuracy = %f (%d/%d)%n", (double)accuracy_cnt / size, accuracy_cnt, size);
+        assertEquals(60000, size);
+        assertTrue(accuracy_cnt > size * 0.9);
     }
 }
