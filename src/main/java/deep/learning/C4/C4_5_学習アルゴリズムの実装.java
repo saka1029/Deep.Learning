@@ -14,7 +14,6 @@ import org.nd4j.linalg.dataset.DataSet;
 
 import deep.learning.common.Constants;
 import deep.learning.common.MNISTImages;
-import deep.learning.common.TwoLayerNet;
 import deep.learning.common.TwoLayerParams;
 
 public class C4_5_学習アルゴリズムの実装 {

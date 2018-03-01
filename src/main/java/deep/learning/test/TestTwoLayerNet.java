@@ -17,10 +17,10 @@ import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.indexing.NDArrayIndex;
 
+import deep.learning.C4.TwoLayerNet;
 import deep.learning.common.Constants;
 import deep.learning.common.Functions;
 import deep.learning.common.MNISTImages;
-import deep.learning.common.TwoLayerNet;
 import deep.learning.common.TwoLayerParams;
 
 public class TestTwoLayerNet {

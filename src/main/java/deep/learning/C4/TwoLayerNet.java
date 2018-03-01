@@ -1,9 +1,13 @@
-package deep.learning.common;
+package deep.learning.C4;
 
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.api.rng.DefaultRandom;
 import org.nd4j.linalg.api.rng.Random;
 import org.nd4j.linalg.factory.Nd4j;
+
+import deep.learning.common.Functions;
+import deep.learning.common.INDArrayFunction;
+import deep.learning.common.TwoLayerParams;
 
 public class TwoLayerNet {
 
@@ -17,16 +21,16 @@ public class TwoLayerNet {
     }
 
     public TwoLayerNet(int input_size, int hidden_size, int output_size) throws Exception {
-        this(input_size, hidden_size, output_size, 0.01F);
+        this(input_size, hidden_size, output_size, 0.01D);
     }
 
     public TwoLayerNet(int input_size, int hidden_size, int output_size, double weight_init_std) throws Exception {
         try (Random r = new DefaultRandom()) {
             this.parms = new TwoLayerParams(
                 r.nextGaussian(new int[] {input_size, hidden_size}).mul(weight_init_std),
-                Nd4j.create(hidden_size),
+                Nd4j.zeros(hidden_size),
                 r.nextGaussian(new int[] {hidden_size, output_size}).mul(weight_init_std),
-                Nd4j.create(output_size));
+                Nd4j.zeros(output_size));
         }
     }
 

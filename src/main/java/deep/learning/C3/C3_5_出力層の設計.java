@@ -44,13 +44,13 @@ public class C3_5_出力層の設計 {
     public void C3_5_2_ソフトマックス関数実装上の注意() {
         INDArray a = Nd4j.create(new double[] {1010, 1000, 990});
         // 正しく計算されない
-        assertEquals("[�,�,�]", Util.string(Transforms.exp(a).div(Transforms.exp(a).sumNumber())));
+        assertEquals("[NaN,NaN,NaN]", Util.string(Transforms.exp(a).div(Transforms.exp(a).sumNumber())));
         Number c = a.maxNumber();
         assertEquals("[0.00,-10.00,-20.00]", Util.string(a.sub(c)));
         assertEquals("[1.00,0.00,0.00]", Util.string(Transforms.exp(a.sub(c)).div(Transforms.exp(a.sub(c)).sumNumber())));
 
         // 間違い
-        assertEquals("[�,�,�]", Util.string(softmax_wrong(a)));
+        assertEquals("[NaN,NaN,NaN]", Util.string(softmax_wrong(a)));
         // 正しい
         assertEquals("[1.00,0.00,0.00]", Util.string(softmax_right(a)));
         // ND4Jには正しいsoftmax(INDArray)が用意されています。

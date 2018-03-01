@@ -122,4 +122,10 @@ public class TestFunctions {
                 {0.57444252, 0.66818777, 0.75026011}}), Z2);
     }
 
+    @Test
+    public void testAverage() {
+        INDArray a = Nd4j.create(new double[][] {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
+        assertEquals(5.0, Functions.average(a), 5e-6);
+    }
+
 }

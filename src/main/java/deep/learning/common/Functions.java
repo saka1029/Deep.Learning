@@ -34,6 +34,7 @@ public class Functions {
         // 理屈はよくわかりませんが、INDArrayの精度が単精度の場合は
         // 1e-3の方が正しく結果を求められるようです。
         double h = 1e-3;
+//        double h = 1e-4;
         INDArray grad = Nd4j.create(x.shape());
         for (int r = 0; r < rows; ++r)
             for (int c = 0; c < cols; ++c) {
@@ -80,11 +81,26 @@ public class Functions {
 
     /**
      * sigmoid関数の実装です。
-     *
-     * @param x
-     * @return
      */
     public static INDArray sigmoid(INDArray x) {
         return Transforms.sigmoid(x);
+        // 以下のように実装することもできます。
+        // return Transforms.exp(x.neg()).add(1.0).rdiv(1.0);
     }
+
+    /**
+     * ReLU関数の実装です。
+     */
+    public static INDArray relu(INDArray x) {
+        return Transforms.relu(x);
+    }
+
+    /**
+     * 平均を求めます。
+     */
+    public static double average(INDArray x) {
+        // x.length()はすべての要素数を返します。
+        return x.sumNumber().doubleValue() / x.length();
+    }
+
 }

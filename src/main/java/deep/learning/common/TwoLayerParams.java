@@ -18,6 +18,10 @@ public class TwoLayerParams implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("W1=%s,b1=%s,W2=%s,b2=%s", W1, b1, W2, b2);
+        return String.format("W1=%s%nb1=%s%nW2=%s%nb2=%s%n",
+            Util.toStringExact(W1),
+            Util.toStringExact(b1),
+            Util.toStringExact(W2),
+            Util.toStringExact(b2));
     }
 }
