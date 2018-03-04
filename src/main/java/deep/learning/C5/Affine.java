@@ -23,6 +23,7 @@ public class Affine implements Layer {
         // W.transpose()はWの転置行列です。
         INDArray dx = dout.mmul(W.transpose());
         this.dW = x.transpose().mmul(dout);
+        // 集約して1行にします。
         this.db = dout.sum(0);
         return dx;
     }
