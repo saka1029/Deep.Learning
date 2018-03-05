@@ -3,6 +3,7 @@ package deep.learning.common;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.api.ops.impl.indexaccum.IAMax;
 import org.nd4j.linalg.factory.Nd4j;
+import org.nd4j.linalg.lossfunctions.LossFunctions;
 import org.nd4j.linalg.ops.transforms.Transforms;
 
 public class Functions {
@@ -17,7 +18,9 @@ public class Functions {
     public static double cross_entropy_error(INDArray y, INDArray t) {
         double delta = 1e-7;
         // Python: return -np.sum(t * np.log(y + delta))
-        return -t.mul(Transforms.log(y.add(delta))).sumNumber().doubleValue();
+        // return -t.mul(Transforms.log(y.add(delta))).sumNumber().doubleValue();
+        // Nd4jのLossFunctionsを使います。
+        return LossFunctions.score(t, LossFunctions.LossFunction.MCXENT, y, 0, 0, false);
     }
 
     /**
@@ -54,9 +57,8 @@ public class Functions {
     /**
      * ソフトマックス関数の実装です。
      *
-     * @param x 1次元または2次元の行列を指定します。
-     * @return xよりも1次元低い行列を返します。
-     *         各要素は整数値となります。
+     * @param x
+     * @return
      */
     public static INDArray softmax(INDArray a) {
         return Transforms.softmax(a);

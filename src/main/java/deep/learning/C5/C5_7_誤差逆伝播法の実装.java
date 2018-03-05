@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.Test;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.DataSet;
+import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.indexing.NDArrayIndex;
 import org.nd4j.linalg.ops.transforms.Transforms;
 
@@ -15,6 +16,7 @@ import deep.learning.common.Constants;
 import deep.learning.common.Functions;
 import deep.learning.common.MNISTImages;
 import deep.learning.common.TwoLayerParams;
+import deep.learning.common.Util;
 
 public class C5_7_誤差逆伝播法の実装 {
 
@@ -68,7 +70,7 @@ public class C5_7_誤差逆伝播法の実装 {
         int iters_num = 10000;
         int train_size = x_train.size(0);
         int batch_size = 100;
-        double learning_rate = 0.05;
+        double learning_rate = 0.1;
         List<Double> train_loss_list = new ArrayList<>();
         List<Double> train_acc_list = new ArrayList<>();
         List<Double> test_acc_list = new ArrayList<>();
@@ -94,10 +96,16 @@ public class C5_7_誤差逆伝播法の実装 {
                 test_acc_list.add(test_acc);
                 System.out.printf("train_acc=%f test_acc=%f%n", train_acc, test_acc);
             }
-//            System.out.printf("%d: loss=%f elapse=%dms%n",
-//                i, loss, System.currentTimeMillis() - start);
         }
     }
 
+    @Test
+    public void testSum() {
+        INDArray a = Nd4j.create(new double[][] {{1, 2}, {3, 4}});
+        // 行を集約
+        assertEquals("[4.00,6.00]", Util.string(a.sum(0)));
+        // 列を集約
+        assertEquals("[3.00,7.00]", Util.string(a.sum(1)));
+    }
 
 }
