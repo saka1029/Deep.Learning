@@ -58,10 +58,21 @@ public class C4_2_損失関数 {
         INDArray t = Nd4j.create(new double[] {0, 0, 1, 0, 0, 0, 0, 0, 0, 0});
         INDArray y = Nd4j.create(new double[] {0.1, 0.05, 0.6, 0.0, 0.05, 0.1, 0.0, 0.1, 0.0, 0.0});
         assertEquals(0.51082545709933802, cross_entropy_error(y, t), 5e-6);
-        // LossFunctionsを使って実現することもできます。
-         assertEquals(0.51082545709933802, LossFunctions.score(t, LossFunctions.LossFunction.MCXENT, y, 0, 0, false), 5e-6);
         y = Nd4j.create(new double[] {0.1, 0.05, 0.1, 0.0, 0.05, 0.1, 0.0, 0.6, 0.0, 0.0});
         assertEquals(2.3025840929945458, cross_entropy_error(y, t), 5e-6);
+    }
+
+    @Test
+    public void C4_2_2_交差エントロピー誤差2() {
+        INDArray t = Nd4j.create(new double[][] {{0, 0, 1, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0, 0, 0, 0, 0}});
+        INDArray y = Nd4j.create(new double[][] {
+            {0.1, 0.05, 0.6, 0.0, 0.05, 0.1, 0.0, 0.1, 0.0, 0.0},
+            {0.1, 0.05, 0.6, 0.0, 0.05, 0.1, 0.0, 0.1, 0.0, 0.0}});
+        assertEquals(1.021650791168213, cross_entropy_error(y, t), 5e-6);
+        y = Nd4j.create(new double[][] {
+            {0.1, 0.05, 0.1, 0.0, 0.05, 0.1, 0.0, 0.6, 0.0, 0.0},
+            {0.1, 0.05, 0.1, 0.0, 0.05, 0.1, 0.0, 0.6, 0.0, 0.0}});
+        assertEquals(4.6051683421590332, cross_entropy_error(y, t), 5e-6);
     }
 
     @Test

@@ -1,5 +1,7 @@
 package deep.learning.common;
 
+import java.util.function.DoubleUnaryOperator;
+
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.api.ops.impl.indexaccum.IAMax;
 import org.nd4j.linalg.factory.Nd4j;
@@ -20,7 +22,8 @@ public class Functions {
         // Python: return -np.sum(t * np.log(y + delta))
         // return -t.mul(Transforms.log(y.add(delta))).sumNumber().doubleValue();
         // Nd4jのLossFunctionsを使います。
-        return LossFunctions.score(t, LossFunctions.LossFunction.MCXENT, y, 0, 0, false);
+        int batch_size = y.size(0);
+        return LossFunctions.score(t, LossFunctions.LossFunction.MCXENT, y, 0, 0, false) / batch_size;
     }
 
     /**
@@ -34,11 +37,8 @@ public class Functions {
     public static INDArray numerical_gradient(INDArrayFunction f, INDArray x) {
         int rows = x.size(0);
         int cols = x.size(1);
-        // 理屈はよくわかりませんが、INDArrayの精度が単精度の場合は
-        // 1e-3の方が正しく結果を求められるようです。
-        double h = 1e-3;
-//        double h = 1e-4;
-        INDArray grad = Nd4j.create(x.shape());
+        double h = 1e-4;
+        INDArray grad = Nd4j.zerosLike(x);
         for (int r = 0; r < rows; ++r)
             for (int c = 0; c < cols; ++c) {
                 double tmp_val = x.getDouble(r, c);
@@ -47,9 +47,24 @@ public class Functions {
                 x.putScalar(r, c, tmp_val - h);
                 double fxh2 = f.apply(x);
                 double g = (fxh1 - fxh2) / (2.0 * h);
-//                System.out.printf("fxh1=%f fxh2=%f g=%f%n", fxh1, fxh2, g);
                 grad.putScalar(r, c, g);
                 x.putScalar(r, c, tmp_val);
+            }
+        return grad;
+    }
+
+    public static INDArray numerical_gradient(DoubleUnaryOperator f, INDArray x) {
+        int rows = x.size(0);
+        int cols = x.size(1);
+        double h = 1e-4;
+        INDArray grad = Nd4j.zeros(x.shape());
+        for (int r = 0; r < rows; ++r)
+            for (int c = 0; c < cols; ++c) {
+                double tmp_val = x.getDouble(r, c);
+                double fxh1 = f.applyAsDouble(tmp_val + h);
+                double fxh2 = f.applyAsDouble(tmp_val - h);
+                double g = (fxh1 - fxh2) / (2.0 * h);
+                grad.putScalar(r, c, g);
             }
         return grad;
     }
@@ -78,7 +93,11 @@ public class Functions {
      * @return m×n行列の入力に対して結果はm×1行列となります。
      */
     public static INDArray argmax(INDArray a) {
-        return Nd4j.getExecutioner().exec(new IAMax(a), 1);
+        return argmax(a, 1);
+    }
+
+    public static INDArray argmax(INDArray a, int axis) {
+        return Nd4j.getExecutioner().exec(new IAMax(a), axis);
     }
 
     /**

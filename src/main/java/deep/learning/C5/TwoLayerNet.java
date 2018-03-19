@@ -11,13 +11,18 @@ import org.nd4j.linalg.api.rng.DefaultRandom;
 import org.nd4j.linalg.api.rng.Random;
 import org.nd4j.linalg.factory.Nd4j;
 
+import deep.learning.common.Affine;
 import deep.learning.common.Functions;
 import deep.learning.common.INDArrayFunction;
-import deep.learning.common.TwoLayerParams;
+import deep.learning.common.LastLayer;
+import deep.learning.common.Layer;
+import deep.learning.common.Params;
+import deep.learning.common.Relu;
+import deep.learning.common.SoftmaxWithLoss;
 
 public class TwoLayerNet {
 
-    final TwoLayerParams parms;
+    final Params params;
     final Map<String, Layer> layers;
     final LastLayer lastLayer;
 
@@ -29,18 +34,19 @@ public class TwoLayerNet {
     public TwoLayerNet(int input_size, int hidden_size,
         int output_size, double weight_init_std) throws Exception {
         // 重みの初期化
-        try (Random r = new DefaultRandom()) {
-            parms = new TwoLayerParams(
-                r.nextGaussian(new int[] {input_size, hidden_size}).mul(weight_init_std),
-                Nd4j.zeros(hidden_size),
-                r.nextGaussian(new int[] {hidden_size, output_size}).mul(weight_init_std),
-                Nd4j.zeros(output_size));
+        // シードをゼロに固定して常に同じ乱数を発生させます。
+        try (Random r = new DefaultRandom(0)) {
+            params = new Params()
+                .put("W1", r.nextGaussian(new int[] {input_size, hidden_size}).mul(weight_init_std))
+                .put("b1", Nd4j.zeros(hidden_size))
+                .put("W2", r.nextGaussian(new int[] {hidden_size, output_size}).mul(weight_init_std))
+                .put("b2", Nd4j.zeros(output_size));
         }
         // レイヤの生成
         layers = new LinkedHashMap<>();
-        layers.put("Affine1", new Affine(parms.W1, parms.b1));
+        layers.put("Affine1", new Affine(params.get("W1"), params.get("b1")));
         layers.put("Relu1", new Relu());
-        layers.put("Affine2", new Affine(parms.W2, parms.b2));
+        layers.put("Affine2", new Affine(params.get("W2"), params.get("b2")));
         lastLayer = new SoftmaxWithLoss();
     }
 
@@ -61,20 +67,21 @@ public class TwoLayerNet {
         if (t.size(0) != 1)
             t = Functions.argmax(t);
         double accuracy = y.eq(t.broadcast(y.shape())).sumNumber().doubleValue() / x.size(0);
+//        double accuracy = y.eps(t.broadcast(y.shape())).sumNumber().doubleValue() / x.size(0);
         return accuracy;
     }
 
-    public TwoLayerParams numerical_gradient(INDArray x, INDArray t) {
+    public Params numerical_gradient(INDArray x, INDArray t) {
         INDArrayFunction loss_W = W -> loss(x, t);
-        TwoLayerParams grads = new TwoLayerParams(
-            Functions.numerical_gradient(loss_W, parms.W1),
-            Functions.numerical_gradient(loss_W, parms.b1),
-            Functions.numerical_gradient(loss_W, parms.W2),
-            Functions.numerical_gradient(loss_W, parms.b2));
+        Params grads = new Params()
+            .put("W1", Functions.numerical_gradient(loss_W, params.get("W1")))
+            .put("b1", Functions.numerical_gradient(loss_W, params.get("b1")))
+            .put("W2", Functions.numerical_gradient(loss_W, params.get("W2")))
+            .put("b2", Functions.numerical_gradient(loss_W, params.get("b2")));
         return grads;
     }
 
-    public TwoLayerParams gradient(INDArray x, INDArray t) {
+    public Params gradient(INDArray x, INDArray t) {
         // forward
         loss(x, t);
         // backward
@@ -86,11 +93,11 @@ public class TwoLayerNet {
         Collections.reverse(layers);
         for (Layer layer : layers)
             dout = layer.backward(dout);
-        TwoLayerParams grads = new TwoLayerParams(
-            ((Affine)this.layers.get("Affine1")).dW,
-            ((Affine)this.layers.get("Affine1")).db,
-            ((Affine)this.layers.get("Affine2")).dW,
-            ((Affine)this.layers.get("Affine2")).db);
+        Params grads = new Params()
+            .put("W1", ((Affine)this.layers.get("Affine1")).dW)
+            .put("b1", ((Affine)this.layers.get("Affine1")).db)
+            .put("W2", ((Affine)this.layers.get("Affine2")).dW)
+            .put("b2", ((Affine)this.layers.get("Affine2")).db);
         return grads;
     }
 }

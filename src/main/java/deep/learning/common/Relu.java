@@ -1,8 +1,6 @@
-package deep.learning.C5;
+package deep.learning.common;
 
 import org.nd4j.linalg.api.ndarray.INDArray;
-
-import deep.learning.common.Functions;
 
 public class Relu implements Layer {
 
@@ -12,7 +10,7 @@ public class Relu implements Layer {
     public INDArray forward(INDArray x) {
         // 要素の値＞0.0の時は1、それ以外の時は0をmaskに格納します。
         // "gt"は"greater than"の意味です。
-        mask = x.gt(0.0);
+        this.mask = x.gt(0.0);
         return Functions.relu(x);
     }
 

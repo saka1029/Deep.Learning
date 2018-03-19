@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 
+import deep.learning.common.Relu;
 import deep.learning.common.Util;
 
 public class C5_5_活性化関数レイヤの実装 {

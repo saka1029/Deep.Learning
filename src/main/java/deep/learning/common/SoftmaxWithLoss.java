@@ -1,8 +1,6 @@
-package deep.learning.C5;
+package deep.learning.common;
 
 import org.nd4j.linalg.api.ndarray.INDArray;
-
-import deep.learning.common.Functions;
 
 public class SoftmaxWithLoss implements LastLayer {
 
@@ -18,8 +16,9 @@ public class SoftmaxWithLoss implements LastLayer {
     }
 
     @Override
-    public INDArray backward(INDArray x) {
-        int batch_size = this.t.size(0);
-        return this.y.sub(this.t).div(batch_size);
+    public INDArray backward(INDArray dout) {
+        // doutは参照していない点に注意してください。
+         int batch_size = this.t.size(0);
+         return this.y.sub(this.t).div(batch_size);
     }
 }

@@ -21,17 +21,17 @@ import deep.learning.C4.TwoLayerNet;
 import deep.learning.common.Constants;
 import deep.learning.common.Functions;
 import deep.learning.common.MNISTImages;
-import deep.learning.common.TwoLayerParams;
+import deep.learning.common.Params;
 
-public class TestTwoLayerNet {
+public class TestC4_TwoLayerNet {
 
     @Test
     public void testTwoLayerNet() throws Exception {
-        TwoLayerNet net = new TwoLayerNet(784, 100, 10);
-        assertArrayEquals(new int[] {784, 100}, net.parms.W1.shape());
-        assertArrayEquals(new int[] {1, 100}, net.parms.b1.shape());
-        assertArrayEquals(new int[] {100, 10}, net.parms.W2.shape());
-        assertArrayEquals(new int[] {1, 10}, net.parms.b2.shape());
+        TwoLayerNet net = new deep.learning.C4.TwoLayerNet(784, 100, 10);
+        assertArrayEquals(new int[] {784, 100}, net.parms.get("W1").shape());
+        assertArrayEquals(new int[] {1, 100}, net.parms.get("b1").shape());
+        assertArrayEquals(new int[] {100, 10}, net.parms.get("W2").shape());
+        assertArrayEquals(new int[] {1, 10}, net.parms.get("b2").shape());
     }
 
     @Test
@@ -83,11 +83,8 @@ public class TestTwoLayerNet {
             DataSet sample = ds.sample(batch_size);
             INDArray x_batch = sample.getFeatureMatrix();
             INDArray t_batch = sample.getLabels();
-            TwoLayerParams grad = network.numerical_gradient(x_batch, t_batch);
-            network.parms.W1.subi(grad.W1.mul(learning_rate));
-            network.parms.b1.subi(grad.b1.mul(learning_rate));
-            network.parms.W2.subi(grad.W2.mul(learning_rate));
-            network.parms.b2.subi(grad.b2.mul(learning_rate));
+            Params grad = network.numerical_gradient(x_batch, t_batch);
+            network.parms.update((p, a) -> p.subi(a.mul(learning_rate)), grad);
             // 学習経過の記録
             double loss = network.loss(x_batch, t_batch);
             double train_acc = network.accuracy(x_train, t_train);
@@ -112,16 +109,17 @@ public class TestTwoLayerNet {
      * 90%まで訓練したウェイトデータで訓練データを認識して
      * 認識精度が90%を超えることを確認します。
      */
+    @Ignore
     @Test
     public void testPredict() throws Exception {
         MNISTImages train = new MNISTImages(Constants.TrainImages, Constants.TrainLabels);
         INDArray x_train = train.normalizedImages();
         File weights = new File(Constants.WEIGHTS, "TwoLayerParms.ser");
-        TwoLayerParams parms = null;
+        Params parms = null;
         try (ObjectInputStream is = new ObjectInputStream(new FileInputStream(weights))) {
-            parms = (TwoLayerParams)is.readObject();
+            parms = (Params)is.readObject();
         }
-        TwoLayerNet network = new TwoLayerNet(parms.W1, parms.b1, parms.W2, parms.b2);
+        TwoLayerNet network = new TwoLayerNet(parms.get("W1"), parms.get("b1"), parms.get("W2"), parms.get("b2"));
         int batch_size = 100;
         int size = x_train.size(0);
         int accuracy_cnt = 0;

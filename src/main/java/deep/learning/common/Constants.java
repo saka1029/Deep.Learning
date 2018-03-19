@@ -16,5 +16,5 @@ public class Constants {
     public static File TrainImagesOutput = new File(IMAGES, "train");
     public static File TestImagesOutput = new File(IMAGES, "test");
     public static File SampleImagesOutput = new File(IMAGES, "sample");
-
+    public static File OptimizerImages = new File(IMAGES, "optimizer");
 }

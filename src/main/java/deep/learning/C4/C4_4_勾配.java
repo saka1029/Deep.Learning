@@ -27,9 +27,9 @@ public class C4_4_勾配 {
     @Test
     public void C4_4() {
         // 4.4節の冒頭のサンプルプログラムです。
-        assertEquals("[6.00,8.00]", Util.string(Functions.numerical_gradient(this::function_2, Nd4j.create(new double[] {3.0, 4.0}))));
+        assertEquals("[5.99,8.00]", Util.string(Functions.numerical_gradient(this::function_2, Nd4j.create(new double[] {3.0, 4.0}))));
         assertEquals("[0.00,4.00]", Util.string(Functions.numerical_gradient(this::function_2, Nd4j.create(new double[] {0.0, 2.0}))));
-        assertEquals("[6.00,0.00]", Util.string(Functions.numerical_gradient(this::function_2, Nd4j.create(new double[] {3.0, 0.0}))));
+        assertEquals("[5.99,0.00]", Util.string(Functions.numerical_gradient(this::function_2, Nd4j.create(new double[] {3.0, 0.0}))));
     }
 
     public static INDArray gradient_descent(INDArrayFunction f, INDArray init_x, double lr, int step_num) {
@@ -54,7 +54,7 @@ public class C4_4_勾配 {
     // 学習率が大きすぎる例: lr = 10.0
     r = gradient_descent(this::function_2, init_x, 10.0, 100);
     // Pythonの結果とは同じになりませんが、いずれにしても正しい結果は得られません。
-    assertEquals("[-763,389.44,1,017,852.62]", Util.string(r));
+    assertEquals("[25,111.97,-33,524.69]", Util.string(r));
     // 学習率が小さすぎる例: lr = 1e-10
     r = gradient_descent(this::function_2, init_x, 1e-10, 100);
     assertEquals("[-3.00,4.00]", Util.string(r));

@@ -53,6 +53,7 @@ public class C5_4_単純なレイヤの実装 {
             return new double[] {dout, dout};
         }
     }
+
     @Test
     public void C5_4_2_加算レイヤの実装() {
         double apple = 100;

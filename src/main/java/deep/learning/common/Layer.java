@@ -1,4 +1,4 @@
-package deep.learning.C5;
+package deep.learning.common;
 
 import org.nd4j.linalg.api.ndarray.INDArray;
 

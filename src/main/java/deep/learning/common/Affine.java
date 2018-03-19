@@ -1,11 +1,12 @@
-package deep.learning.C5;
+package deep.learning.common;
 
 import org.nd4j.linalg.api.ndarray.INDArray;
 
 public class Affine implements Layer {
 
-    final INDArray W, b;
-    INDArray x, dW, db;
+    public final INDArray W, b;
+    INDArray x;
+    public INDArray dW, db;
 
     public Affine(INDArray W, INDArray b) {
         this.W = W;
@@ -22,9 +23,9 @@ public class Affine implements Layer {
     public INDArray backward(INDArray dout) {
         // W.transpose()はWの転置行列です。
         INDArray dx = dout.mmul(W.transpose());
-        this.dW = x.transpose().mmul(dout);
+        dW = x.transpose().mmul(dout);
         // 集約して1行にします。
-        this.db = dout.sum(0);
+        db = dout.sum(0);
         return dx;
     }
 }

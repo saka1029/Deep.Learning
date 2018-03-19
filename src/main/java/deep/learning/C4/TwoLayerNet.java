@@ -7,17 +7,21 @@ import org.nd4j.linalg.factory.Nd4j;
 
 import deep.learning.common.Functions;
 import deep.learning.common.INDArrayFunction;
-import deep.learning.common.TwoLayerParams;
+import deep.learning.common.Params;
 
 public class TwoLayerNet {
 
-    public final TwoLayerParams parms;
+    public final Params parms;
 
     /**
      * 重みとバイアスを外部から直接指定するテスト用のコンストラクタです。
      */
     public TwoLayerNet(INDArray W1, INDArray b1, INDArray W2, INDArray b2) {
-        this.parms = new TwoLayerParams(W1, b1, W2, b2);
+        this.parms = new Params()
+            .put("W1", W1)
+            .put("b1", b1)
+            .put("W2", W2)
+            .put("b2", b2);
     }
 
     public TwoLayerNet(int input_size, int hidden_size, int output_size) throws Exception {
@@ -26,18 +30,18 @@ public class TwoLayerNet {
 
     public TwoLayerNet(int input_size, int hidden_size, int output_size, double weight_init_std) throws Exception {
         try (Random r = new DefaultRandom()) {
-            this.parms = new TwoLayerParams(
-                r.nextGaussian(new int[] {input_size, hidden_size}).mul(weight_init_std),
-                Nd4j.zeros(hidden_size),
-                r.nextGaussian(new int[] {hidden_size, output_size}).mul(weight_init_std),
-                Nd4j.zeros(output_size));
+            this.parms = new Params()
+                .put("W1", r.nextGaussian(new int[] {input_size, hidden_size}).mul(weight_init_std))
+                .put("b1", Nd4j.zeros(hidden_size))
+                .put("W2", r.nextGaussian(new int[] {hidden_size, output_size}).mul(weight_init_std))
+                .put("b2", Nd4j.zeros(output_size));
         }
     }
 
     public INDArray predict(INDArray x) {
-        INDArray a1 = x.mmul(parms.W1).addRowVector(parms.b1);
+        INDArray a1 = x.mmul(parms.get("W1")).addRowVector(parms.get("b1"));
         INDArray z1 = Functions.sigmoid(a1);
-        INDArray a2 = z1.mmul(parms.W2).addRowVector(parms.b2);
+        INDArray a2 = z1.mmul(parms.get("W2")).addRowVector(parms.get("b2"));
         INDArray y = Functions.softmax(a2);
         return y;
     }
@@ -52,21 +56,22 @@ public class TwoLayerNet {
         // M×N配列のargmaxはM×1行列となります。
         y = Functions.argmax(y);
         t = Functions.argmax(t);
-        double accuracy = 0;
+        // y.eq(t)は対応する要素が等しいとき1、そうでないとき0を返します。
+        double accuracy = y.eq(t).sumNumber().doubleValue();
         int size = t.size(0);
-        for (int i = 0; i < size; ++i)
-            if (y.getInt(i) == t.getInt(i))
-                ++accuracy;
+        // for (int i = 0; i < size; ++i)
+        //     if (y.getInt(i) == t.getInt(i))
+        //         ++accuracy;
         return accuracy / size;
     }
 
-    public TwoLayerParams numerical_gradient(INDArray x, INDArray t) {
+    public Params numerical_gradient(INDArray x, INDArray t) {
         INDArrayFunction loss_W = W -> loss(x, t);
-        return new TwoLayerParams(
-            Functions.numerical_gradient(loss_W, parms.W1),
-            Functions.numerical_gradient(loss_W, parms.b1),
-            Functions.numerical_gradient(loss_W, parms.W2),
-            Functions.numerical_gradient(loss_W, parms.b2));
+        return new Params()
+            .put("W1", Functions.numerical_gradient(loss_W, parms.get("W1")))
+            .put("b1", Functions.numerical_gradient(loss_W, parms.get("b1")))
+            .put("W2", Functions.numerical_gradient(loss_W, parms.get("W2")))
+            .put("b2", Functions.numerical_gradient(loss_W, parms.get("b2")));
     }
 
 }

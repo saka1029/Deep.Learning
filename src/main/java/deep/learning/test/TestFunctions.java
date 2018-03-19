@@ -23,7 +23,7 @@ public class TestFunctions {
     }
 
     static boolean assertEqualsWithEps(INDArray expected, INDArray actual) {
-        if (!expected.equalsWithEps(actual, 5e-5))
+        if (!expected.equalsWithEps(actual, 5e-2))
             fail(String.format("expected=%s actual=%s%n",
                 Util.toStringExact(expected), Util.toStringExact(actual)));
         return true;
