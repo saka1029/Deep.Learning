@@ -17,4 +17,11 @@ public class Constants {
     public static File TestImagesOutput = new File(IMAGES, "test");
     public static File SampleImagesOutput = new File(IMAGES, "sample");
     public static File OptimizerImages = new File(IMAGES, "optimizer");
+    public static File WeightImages = new File(IMAGES, "weight");
+
+    public static File file(File dir, String file) {
+        if (!dir.exists())
+            dir.mkdirs();
+        return new File(dir, file);
+    }
 }

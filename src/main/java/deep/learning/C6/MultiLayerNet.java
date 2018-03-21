@@ -42,10 +42,12 @@ public class MultiLayerNet {
      * @param weight_init_std 重みの標準偏差を指定(e.g. 0.01)
      *                        "relu"または"he"を指定した場合は「Heの初期値」を設定
      *                        "sigmoid"または"xavier"を指定した場合は「Xavierの初期値」を設定
+     *                        本書ではdoubleとStringのいずれかを指定できるようですが、
+     *                        ここではString型としました。
      * @param weight_decay_lambda Weight Decay (L2ノルム)の強さ
      */
     public MultiLayerNet(int input_size, int[] hidden_size_list, int output_size,
-        String activation, double weight_init_std, double weight_decay_lambda) {
+        String activation, String weight_init_std, double weight_decay_lambda) {
         this.input_size = input_size;
         this.output_size = output_size;
         this.hidden_size_list = hidden_size_list;
@@ -70,8 +72,13 @@ public class MultiLayerNet {
         last_layer = new SoftmaxWithLoss();
     }
 
+    public MultiLayerNet(int input_size, int[] hidden_size_list, int output_size,
+        String weight_init_std) {
+        this(input_size, hidden_size_list, output_size, "relu", weight_init_std, 0);
+    }
+
     public MultiLayerNet(int input_size, int[] hidden_size_list, int output_size) {
-        this(input_size, hidden_size_list, output_size, "relu", 0.01, 0);
+        this(input_size, hidden_size_list, output_size, "relu", "relu", 0);
     }
 
     /**
@@ -81,19 +88,22 @@ public class MultiLayerNet {
      *                        "relu"または"he"を指定した場合は「Heの初期値」を設定
      *                        "sigmoid"または"xavier"を指定した場合は「Xavierの初期値」を設定
      */
-    private void __init_weight(String activation, double weight_init_std) {
+    private void __init_weight(String activation, String weight_init_std) {
         int[] all_size_list = new int[hidden_size_list.length + 2];
         all_size_list[0] = input_size;
         System.arraycopy(hidden_size_list, 0, all_size_list, 1, hidden_size_list.length);
         all_size_list[all_size_list.length - 1] = output_size;
         for (int idx = 1; idx < all_size_list.length; ++idx) {
-            double scale = weight_init_std;
-            switch (activation.toLowerCase()) {
+            final double scale;
+            switch (weight_init_std.toLowerCase()) {
             case "relu": case "he":
                 scale = Math.sqrt(2.0 / all_size_list[idx - 1]); // ReLUを使う場合に推奨される初期値
                 break;
             case "sigmoid": case "xavier":
                 scale = Math.sqrt(1.0 / all_size_list[idx - 1]); // sigmoidを使う場合に推奨される初期値
+                break;
+            default:
+                scale = Double.parseDouble(weight_init_std);
                 break;
             }
             params.put("W" + idx, Nd4j.randn(all_size_list[idx -1], all_size_list[idx]).mul(scale));

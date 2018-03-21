@@ -18,7 +18,7 @@ public class Functions {
      * @return
      */
     public static double cross_entropy_error(INDArray y, INDArray t) {
-        double delta = 1e-7;
+        // double delta = 1e-7;
         // Python: return -np.sum(t * np.log(y + delta))
         // return -t.mul(Transforms.log(y.add(delta))).sumNumber().doubleValue();
         // Nd4jのLossFunctionsを使います。
@@ -117,11 +117,17 @@ public class Functions {
     }
 
     /**
+     * tanh関数の実装です。
+     */
+    public static INDArray tanh(INDArray x) {
+        return Transforms.tanh(x);
+    }
+
+    /**
      * 平均を求めます。
      */
     public static double average(INDArray x) {
         // x.length()はすべての要素数を返します。
         return x.sumNumber().doubleValue() / x.length();
     }
-
 }

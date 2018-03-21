@@ -34,7 +34,8 @@ public class GraphImage implements Closeable {
      * @param maxX 描画する最大の座標値（右上）のX座標を指定します。
      * @param maxY 描画する最大の座標値（右上）のY座標を指定します。
      */
-    public GraphImage(int width, int height, double minX, double minY, double maxX, double maxY) {
+    public GraphImage(int width, int height,
+        double minX, double minY, double maxX, double maxY) {
         this.width = width;
         this.height = height;
         this.minX = minX;
@@ -47,11 +48,6 @@ public class GraphImage implements Closeable {
         this.graphics = this.image.createGraphics();
         this.graphics.setColor(new Color(240, 240, 240));
         this.graphics.fillRect(0, 0, width, height);
-        this.graphics.setColor(Color.BLACK);
-        // X座標を描画します。
-        line(minX, 0, maxX, 0);
-        // Y座標を描画します。
-        line(0, minY, 0, maxY);
         this.graphics.setColor(Color.RED);
     }
 
@@ -77,6 +73,10 @@ public class GraphImage implements Closeable {
         graphics.drawString(str, x(x), y(y));
     }
 
+    public void textInt(String str, int x, int y) {
+        graphics.drawString(str, x, y);
+    }
+
     /**
      * 点をプロットします。
      * @size 点の大きさをピクセル数で指定します。
@@ -84,6 +84,12 @@ public class GraphImage implements Closeable {
     public void plot(double x, double y, int size) {
         int half = size / 2;
         graphics.fillOval(x(x) - half, y(y) - half, size, size);
+    }
+
+    public void box(double x, double y, double width, double height) {
+        int w = x(x + width) - x(x);
+        int h = y(y - height) - y(y);
+        graphics.fillRect(x(x), y(y), w, h);
     }
 
     /**
@@ -110,6 +116,11 @@ public class GraphImage implements Closeable {
      * @throws IOException
      */
     public void writeTo(File output) throws IOException {
+        this.graphics.setColor(Color.BLACK);
+        // X座標を描画します。
+        line(minX, 0, maxX, 0);
+        // Y座標を描画します。
+        line(0, minY, 0, maxY);
         ImageIO.write(image, "png", output);
     }
 
