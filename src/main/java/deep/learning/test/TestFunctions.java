@@ -128,4 +128,19 @@ public class TestFunctions {
         assertEquals(5.0, Functions.average(a), 5e-6);
     }
 
+    @Test
+    public void testArrange() {
+        INDArray a = Functions.arrange(5);
+        assertEquals("[0.00,1.00,2.00,3.00,4.00,5.00]", Util.string(a));
+    }
+
+    @Test
+    public void testLogspace() {
+        INDArray t1 = Functions.logspace(2, 3, 10);
+        assertEquals(
+            "[100.00,129.15,166.81,215.44,278.26,"
+            + "359.38,464.16,599.48,774.26,1,000.00]",
+            Util.string(t1));
+    }
+
 }

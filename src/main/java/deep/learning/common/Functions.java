@@ -130,4 +130,22 @@ public class Functions {
         // x.length()はすべての要素数を返します。
         return x.sumNumber().doubleValue() / x.length();
     }
+
+    public static INDArray arrange(int stop) {
+        if (stop < 0)
+            throw new IllegalArgumentException("stop");
+        INDArray result = Nd4j.create(stop + 1);
+        for (int i = 0; i <= stop; ++i)
+            result.putScalar(i, i);
+        return result;
+    }
+
+    public static INDArray logspace(double start, double stop, int num) {
+        INDArray result = Nd4j.create(num);
+        double d = (stop - start) / (num - 1);
+        double v = start;
+        for (int i = 0; i < num; ++i, v += d)
+            result.putScalar(i, Math.pow(10, v));
+        return result;
+    }
 }
